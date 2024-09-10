@@ -68,7 +68,7 @@ aws-bedrock-streaming-response-example/
    ```
    aws cloudformation describe-stacks \
      --stack-name my-websocket-lambda-stack \
-     --query "Stacks.Outputs[?OutputKey=='WebSocketURI'].OutputValue" \
+     --query "Stacks[0].Outputs[?OutputKey=='WebSocketURI'].OutputValue" \
      --output text
    ```
 
