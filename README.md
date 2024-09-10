@@ -72,14 +72,6 @@ aws-bedrock-streaming-response-example/
      --output text
    ```
 
-## 사용 방법
-
-WebSocket URL을 사용하여 API에 연결합니다. 이 API는 다음 라우트를 지원합니다:
-
-- `$connect`: 새로운 WebSocket 연결 처리
-- `$disconnect`: WebSocket 연결 해제 처리
-- `$default`: 기타 모든 메시지 처리 (Lambda 함수에서 처리)
-
 ## 웹 프론트엔드 테스트 페이지
 
 이 프로젝트는 WebSocket API를 테스트하기 위한 간단한 웹 프론트엔드 페이지를 포함하고 있습니다.
