@@ -20,8 +20,6 @@ Resources:
       ApiId: !Ref WebSocketApi
       Description: Initial deployment of WebSocket API
     DependsOn: 
-      - ConnectRoute
-      - DisconnectRoute
       - DefaultRoute
 
   WebSocketApiStage:
@@ -49,7 +47,10 @@ Resources:
   MyLambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: MyLambdaFunction
+      FunctionName: !Join
+        - '-'
+        - - 'MyLambdaFunction'
+          - !Ref AWS::StackName
       Handler: lambda_function.lambda_handler
       Role: !GetAtt LambdaExecutionRole.Arn
       Code:
@@ -57,57 +58,7 @@ Resources:
         S3Key: lambda-function.zip
       Runtime: python3.12
       Timeout: 30
-
-  ConnectRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref WebSocketApi
-      RouteKey: $connect
-      AuthorizationType: NONE
-      OperationName: ConnectRoute
-      Target: !Join 
-        - '/'
-        - - 'integrations'
-          - !Ref ConnectIntegration
-
-  ConnectIntegration:
-    Type: AWS::ApiGatewayV2::Integration
-    Properties:
-      ApiId: !Ref WebSocketApi
-      IntegrationType: MOCK
-      IntegrationMethod: POST
-      PassthroughBehavior: WHEN_NO_MATCH
-      TemplateSelectionExpression: $default
-      RequestTemplates:
-        $default: '{"statusCode":200}'
-      IntegrationResponses:
-        - StatusCode: 200
-
-  DisconnectRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref WebSocketApi
-      RouteKey: $disconnect
-      AuthorizationType: NONE
-      OperationName: DisconnectRoute
-      Target: !Join 
-        - '/'
-        - - 'integrations'
-          - !Ref DisconnectIntegration
-
-  DisconnectIntegration:
-    Type: AWS::ApiGatewayV2::Integration
-    Properties:
-      ApiId: !Ref WebSocketApi
-      IntegrationType: MOCK
-      IntegrationMethod: POST
-      PassthroughBehavior: WHEN_NO_MATCH
-      TemplateSelectionExpression: $default
-      RequestTemplates:
-        $default: '{"statusCode":200}'
-      IntegrationResponses:
-        - StatusCode: 200
-
+    
   DefaultRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
