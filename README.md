@@ -37,19 +37,22 @@ aws-bedrock-streaming-response-example/
 
 2. Lambda 함수를 패키징합니다:
    ```
-   zip -r lambda-function.zip backend/lambda_function.py backend/requirements.txt
+   cd ws-lambda
+   zip -r lambda-function.zip lambda_function.py requirements.txt
    ```
 
-3. Lambda 함수를 S3 버킷에 업로드합니다:
+3. S3 버킷을 만들고 Lambda 함수를 S3 버킷에 업로드합니다:
    ```
+   aws s3 mb s3://your-lambda-code-bucket/
    aws s3 cp lambda-function.zip s3://your-lambda-code-bucket/
    ```
 
 4. CloudFormation 스택을 배포합니다:
    ```
+   cd ~/aws-bedrock-streaming-response-example
    aws cloudformation create-stack \
      --stack-name my-websocket-lambda-stack \
-     --template-body file://backend/websocket-lambda-stack.yaml \
+     --template-body file://backend/WebSocketLambdaStack.yaml \
      --parameters ParameterKey=LambdaCodeBucket,ParameterValue=your-lambda-code-bucket \
      --capabilities CAPABILITY_IAM
    ```
@@ -103,10 +106,6 @@ WebSocket URL을 사용하여 API에 연결합니다. 이 API는 다음 라우�
 
 이 테스트 페이지를 통해 WebSocket API의 기능을 쉽게 확인할 수 있습니다.
 
-## 커스터마이징
-
-- `backend/lambda_function.py`를 수정하여 WebSocket 메시지 처리를 위한 고유한 로직을 구현할 수 있습니다.
-- `backend/websocket-lambda-stack.yaml`을 업데이트하여 더 많은 리소스를 추가하거나 기존 구성을 수정할 수 있습니다.
 
 ## 정리
 
