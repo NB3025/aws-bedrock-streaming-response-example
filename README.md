@@ -4,6 +4,31 @@ WebSocket API와 Lambda를 사용하여 Amazon Bedrock의 스트리밍 응답을
 
 이 프로젝트는 Bedrock 요청에 대한 스트리밍 응답을 받고 실시간으로 클라이언트에 전달하는 방법을 보여줍니다.
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API Gateway
+    participant Lambda
+    participant Bedrock
+
+    Client->>API Gateway: WebSocket 연결 요청
+    API Gateway->>Client: 연결 승인
+
+    Client->>API Gateway: 메시지 전송
+    API Gateway->>Lambda: 이벤트 전달
+    Lambda->>Bedrock: AI 모델 호출
+    Bedrock->>Lambda: 스트리밍 응답
+    loop 응답 스트리밍
+        Lambda->>API Gateway: 부분 응답 전송
+        API Gateway->>Client: 부분 응답 전달
+    end
+    Lambda->>API Gateway: 최종 응답 전송
+    API Gateway->>Client: 최종 응답 전달
+
+    Client->>API Gateway: WebSocket 연결 종료
+    API Gateway->>Client: 연결 종료 확인
+```
+
 ## 프로젝트 구조
 
 ```
