@@ -42,12 +42,14 @@ aws-bedrock-streaming-response-example/
    ```
 
 3. S3 버킷을 만들고 Lambda 함수를 S3 버킷에 업로드합니다:
+   **your-lambda-code-bucket을 새롭게 만든 S3 버킷의 이름으로 변경하세요.**
    ```
    aws s3 mb s3://your-lambda-code-bucket/
    aws s3 cp lambda-function.zip s3://your-lambda-code-bucket/
    ```
 
-4. CloudFormation 스택을 배포합니다:
+5. CloudFormation 스택을 배포합니다:
+   **your-lambda-code-bucket을 새롭게 만든 S3 버킷의 이름으로 변경하세요.**
    ```
    cd ~/aws-bedrock-streaming-response-example
    aws cloudformation create-stack \
@@ -57,12 +59,12 @@ aws-bedrock-streaming-response-example/
      --capabilities CAPABILITY_IAM
    ```
 
-5. 스택 생성이 완료될 때까지 기다립니다:
+7. 스택 생성이 완료될 때까지 기다립니다:
    ```
    aws cloudformation wait stack-create-complete --stack-name my-websocket-lambda-stack
    ```
 
-6. WebSocket URL을 확인합니다:
+8. WebSocket URL을 확인합니다:
    ```
    aws cloudformation describe-stacks \
      --stack-name my-websocket-lambda-stack \
